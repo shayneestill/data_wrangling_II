@@ -33,3 +33,112 @@ nyc_cost_df =
   first() |>
 ```
 
+##CSS Selectors!!
+
+```{r}
+swm_url = "https://www.imdb.com/list/ls070150896/"
+
+swm_html = read_html(swm_url)
+```
+
+
+```{r}
+title_vec = 
+  swm_html |>
+  html_elements(".ipc-title-link-wrapper .ipc-title__text") |>
+  html_text()
+
+metascore_vec = 
+  swm_html |>
+  html_elements(".metacritic-score-box") |>
+  html_text()
+
+runtime_vec = 
+  swm_html |>
+  html_elements(".dli-title-metadata-item:nth-child(2)") |>
+  html_text()
+
+swm_df = 
+  tibble(
+    title = title_vec,
+    score = metascore_vec,
+    runtime = runtime_vec)
+```
+
+```{r}
+books_html = read_html(url)
+
+books_titles = 
+  books_html |>
+  html_elements("h3") |>
+  html_text2()
+
+books_stars = 
+  books_html |>
+  html_elements(".star-rating") |>
+  html_attr("class")
+
+books_price = 
+  books_html |>
+  html_elements(".price_color") |>
+  html_text()
+
+books = tibble(
+  title = books_titles,
+  stars = books_stars,
+  price = books_price
+)
+
+```
+
+Let's import some books. 
+
+```{r}
+books_html = read_html("https://p8105.com/reading_data_from_the_web.html")
+
+books_html .product_pod a
+```
+
+```{r}
+books_titles = 
+  read_html("https://books.toscrape.com/) |>
+  html_elements("h3") |>
+  html_text2()
+```
+
+
+
+
+##USE API 
+
+Get water data.
+
+```{r}
+nyc_water = 
+  GET("https://data.cityofnewyork.us/resource/ia2d-e54m.csv") |>
+  content("parsed")
+```
+
+Get BRFSS data
+
+```{r}
+
+brfss_df = 
+  GET("https://chronicdata.cdc.gov/resource/acme-vg9e.csv", 
+   query = list("$limit" = 5000)) |> 
+  content()
+```
+
+Pokemon API
+
+```{r}
+pokemon = 
+  GET("https://pokeapi.co/api/v2/pokemon/ditto") |>
+  content()
+```
+
+```{r}
+pokemon$height
+pokemon$abilities
+```
+
